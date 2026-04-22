@@ -1,21 +1,14 @@
 
 <div align="center">
 
-<img src="images/datanova-logo.png" alt="logo" width="500" height="160">
-
-
+# PARIS EVENTS ANALYZER
 
 ![GitHub](https://img.shields.io/github/license/CAprogs/paris-events-analyzer)
-
-
-# PARIS EVENTS ANALYZER
 
 </div>
 
 
 ## À propos
-
-Ce projet est la propriété de **DataNova**, startup spécialisée dans l'analyse de données Open-Source.
 
 L'objectif principal de ce projet est de mettre en valeur les données ouvertes fournies par la ville de Paris pour analyser les événements culturels, sportifs et communautaires.
 
@@ -128,5 +121,50 @@ Pourquoi ce choix ?
 
 </details>
 
-> [!NOTE]
-> Si vous n'êtes intéressés que par le projet final, vous pouvez le retrouver [ici](https://github.com/CAprogs/paris-events-analyzer/tree/end)
+
+## Prérequis
+
+- [Docker](https://docs.docker.com/get-started/introduction/get-docker-desktop/)
+- [UV](https://docs.astral.sh/uv/getting-started/installation/)
+
+## Installation
+
+1. Installer les dépendances du projet
+```bash
+uv sync --frozen --all-groups
+```
+
+2. Installer le projet en mode `editable`
+```bash
+uv pip install -e .
+```
+
+> [!IMPORTANT]
+> Avant de lancer le projet, assurez-vous que :
+> - Le `docker daemon` est en cours d'exécution (Docker Desktop doit être lancé)
+> - Vous avez configuré les variables d'environnement nécessaires dans le fichier `.env` à la racine du projet comme suit :
+>   ```bash
+>   DBT_ENV_SECRET_MINIO_ACCESS_KEY="<YOUR_ACCESS_KEY>"
+>   DBT_ENV_SECRET_MINIO_SECRET_KEY="<YOUR_SECRET_KEY>"
+>   DBT_PROFILES_DIR="./src/transformation/dbt_paris_event_analyzer/profiles/"
+>   DBT_PROJECT_DIR="./src/transformation/dbt_paris_event_analyzer/"
+>   ```
+>   Les identifiants sont à choisir librement avec les règles suivantes :
+>  - `DBT_ENV_SECRET_MINIO_ACCESS_KEY` : au moins 3 caractères, correspond à votre nom d'utilisateur
+>  - `DBT_ENV_SECRET_MINIO_SECRET_KEY` : au moins 8 caractères, correspond à votre mot de passe
+>
+
+3. Déployer les services nécessaires
+```bash
+uv run just comp-start
+```
+
+## Exécution du projet
+
+```bash
+uv run just final-workflow
+```
+
+# Auteur
+
+- [CAprogs](https://github.com/CAprogs)
