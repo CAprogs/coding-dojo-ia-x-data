@@ -1,0 +1,12 @@
+
+version: 2
+
+models:
+  - name: raw_events
+    description: "Raw events data from the Que Faire à Paris API."
+    columns:
+      - name: id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null

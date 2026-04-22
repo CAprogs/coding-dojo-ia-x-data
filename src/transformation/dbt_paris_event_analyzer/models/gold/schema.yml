@@ -1,0 +1,18 @@
+
+version: 2
+
+models:
+  - name: today_events
+    description: "Events happening today in Paris, 'today' is relative to the transformation run date."
+  - name: nb_events_by_tags
+    description: "Number of events grouped by tags."
+    columns:
+      - name: qfap_tags_distinct
+        description: "Distinct tags from the Que Faire à Paris dataset."
+      - name: nb_events
+        description: "Number of events mentioning the tag."
+  - name: handicap_friendly_events
+    description: "Events that are handicap-friendly"
+    columns:
+      - name: handicap_friendly_details
+        description: "Details on the handicap-friendly features of the event."

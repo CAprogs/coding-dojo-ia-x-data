@@ -1,0 +1,21 @@
+dbt_paris_event_analyzer:
+  outputs:
+    prod:
+      type: duckdb
+      path: warehouse/prod.duckdb
+      threads: 4
+      extensions:
+        - httpfs
+        - parquet
+        - spatial
+      filesystems:
+        - fs: s3
+          anon: false
+          key: "{{ env_var('DBT_ENV_SECRET_MINIO_ACCESS_KEY') }}"
+          secret: "{{ env_var('DBT_ENV_SECRET_MINIO_SECRET_KEY') }}"
+          client_kwargs:
+            endpoint_url: "http://localhost:9000"
+            region_name: "some-region" # doesn't matter for local server setup
+            use_ssl: false
+
+  target: prod
