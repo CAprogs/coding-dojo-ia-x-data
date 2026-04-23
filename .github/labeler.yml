@@ -1,3 +1,0 @@
-mission-2-pre-commit:
-  - base-branch: 'mission-2-pre-commit'
-  - head-branch: 'mission-2-pre-commit'
