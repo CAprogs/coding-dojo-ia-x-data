@@ -1,0 +1,19 @@
+mission-1-uv:
+  - base-branch: 'mission-1-uv'
+  - head-branch: 'mission-1-uv'
+
+mission-2-pre-commit:
+  - base-branch: 'mission-2-pre-commit'
+  - head-branch: 'mission-2-pre-commit'
+
+mission-3-commitizen:
+  - base-branch: 'mission-3-commitizen'
+  - head-branch: 'mission-3-commitizen'
+
+mission-4-ruff-mypy:
+  - base-branch: 'mission-4-ruff-mypy'
+  - head-branch: 'mission-4-ruff-mypy'
+
+mission-5-sqlfluff:
+  - base-branch: 'mission-5-sqlfluff'
+  - head-branch: 'mission-5-sqlfluff'

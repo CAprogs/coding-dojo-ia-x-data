@@ -1,0 +1,72 @@
+name: check mission 1
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+    branches: [ "mission-1-uv" ]
+
+
+jobs:
+  check-mission-1:
+    permissions:
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    env:
+      PYTHON: "3.12"
+      INGESTION_ENTRYPOINT: "src/ingestion/main.py"
+      DBT_ENV_SECRET_MINIO_ACCESS_KEY: ${{ secrets.DBT_ENV_SECRET_MINIO_ACCESS_KEY }}
+      DBT_ENV_SECRET_MINIO_SECRET_KEY: ${{ secrets.DBT_ENV_SECRET_MINIO_SECRET_KEY }}
+
+    steps:
+      - name: Check out ${{ github.repository }} PR code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Check file existence
+        uses: andstor/file-existence-action@v3
+        with:
+          files: "pyproject.toml, uv.lock, justfile, .python-version, ${{ env.INGESTION_ENTRYPOINT }}"
+          fail: true
+      - name: Check file absence
+        run: |
+          [ ! -f ".env" ]
+          [ ! -f "requirements.in" ]
+          [ ! -e "pea_cache/" ]
+          [ ! -e "datalake/" ]
+      - name: Check Python pinned version
+        run: grep -Fx ${{ env.PYTHON }} .python-version
+      - name: Check packages installation
+        run: (for f in "dotenv" "duckdb" "minio" "requests-cache" "rich"; do if grep -qF "$f" pyproject.toml; then echo "✅ $f"; else echo "❌ $f" && exit 1; fi; done;)
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.11.x"
+          enable-cache: true
+          cache-dependency-glob: |
+            **/pyproject.toml
+            **/uv.lock
+      - name: Installing Python ${{ env.PYTHON }}
+        run: uv python install ${{ env.PYTHON }}
+      - name: Sync Python environment
+        run: uv sync --frozen
+      - name: Create the datalake directory
+        run: |
+          mkdir -p src/ingestion/datalake
+          echo "Datalake directory created successfully"
+          sleep 2
+      - name: Setting up MinIO
+        run: |
+          docker compose up -d
+      - name: Run ingestion workflow
+        run: uv run python ${{ env.INGESTION_ENTRYPOINT }}
+      - name: Reveal Secret
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: |
+            P-A-R-F-A-I-T !
+
+            Fini `pip`, `pipenv`, `poetry` et tralala, UV c'est LE gestionnaire tout-en un qu'il nous fallait ! :rocket:
+
+            Tu l'as bien mérité, c'est pour toi :eyes: : [ouvre moi :file_folder:](${{ vars.SKILL_1 }})
+          reactions: hooray
