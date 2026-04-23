@@ -16,4 +16,4 @@
 
 ## Pas à pas 🐢
 
-Voir [Notion](https://tough-cyclone-37b.notion.site/Mission-2-pre-commit-20ac1cee419a802badefd1145627abcd)
+Voir [Notion](https://tough-cyclone-37b.notion.site/Mission-4-ruff-mypy-349c1cee419a8123a3d6d14d31aa9258)
