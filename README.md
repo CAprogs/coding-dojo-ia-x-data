@@ -129,4 +129,4 @@ Pourquoi ce choix ?
 </details>
 
 > [!NOTE]
-> Si vous n'êtes intéressés que par le projet final, vous pouvez le retrouver [ici](https://github.com/CAprogs/paris-events-analyzer/tree/end)
+> Le support de ce coding Dojo est disponible [ici](https://tough-cyclone-37b.notion.site/Coding-Dojo-IA-x-Data-349c1cee419a80a594c4e62b37fceb9f?pvs=74)
