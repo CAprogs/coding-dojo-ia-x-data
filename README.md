@@ -15,4 +15,4 @@
 
 ## Pas à pas 🐢
 
-Voir [Notion](https://tough-cyclone-37b.notion.site/Mission-3-commitizen-20ac1cee419a8033aed1e15a5b207d9f)
+Voir [Notion](https://tough-cyclone-37b.notion.site/Mission-3-commitizen-349c1cee419a81958dfde8e6aaedcdfe)
