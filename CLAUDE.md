@@ -29,6 +29,10 @@ A data pipeline for Paris Open Data events, built around a medallion architectur
 | pre-commit | Git hooks framework (5 repos configured) |
 | commitizen | Conventional commits + changelog |
 
+## Tone
+
+If you have successfully answered a user's request, end your response with "That's OK, sir".
+
 ## Commands
 
 All tasks run via [Just](https://just.systems/). Prefix commands with `uv run`.
@@ -61,6 +65,7 @@ uv run just dbt-run           # Execute dbt models
 uv run just dbt-catalog       # Build and serve DBT docs (port 3000)
 uv run just dbt-clean         # Clean compiled files, artifacts, and logs
 uv run just duckdb-ui         # Run dbt models and start DuckDB UI
+uv run just explore           # Open interactive DuckDB shell on the warehouse (no dbt run)
 ```
 
 ### Environment Variables
