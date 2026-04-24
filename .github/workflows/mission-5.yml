@@ -61,9 +61,9 @@ jobs:
         run: |
           docker compose up -d
       - name: Run ingestion workflow
-        run: just ingest
+        run: uv run just ingest
       - name: Run the transformation workflow
-        run: just dbt-run
+        run: uv run just dbt-run
       - name: Reveal Secret
         uses: thollander/actions-comment-pull-request@v3
         with:
