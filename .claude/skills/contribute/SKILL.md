@@ -26,13 +26,13 @@ git remote add upstream https://github.com/CAprogs/coding-dojo-ia-x-data.git
 
 ## Etape 2 - Synchroniser avec upstream
 
-Récupère les dernières modifications du repo de Charles et mets à jour la branche `main` locale :
+Récupère les dernières modifications du repo de Charles et mets à jour la branche `lille` locale :
 
 ```bash
 git fetch upstream
-git checkout main
-git merge upstream/main
-git push origin main
+git checkout lille
+git merge upstream/lille
+git push origin lille
 ```
 
 ## Etape 3 - Récupérer l'issue
@@ -53,21 +53,29 @@ gh issue list --repo CAprogs/coding-dojo-ia-x-data --state open
 
 Demande au contributeur quelle issue il veut traiter.
 
-## Etape 4 - Créer la branche de travail
+## Etape 4 - S'assigner sur l'issue
 
-Crée une branche nommée d'après l'issue depuis `main` à jour :
+Assigne le contributeur sur l'issue pour signaler aux autres qu'il travaille dessus et éviter les doublons :
 
 ```bash
-git checkout -b issue-$issue main
+gh issue edit $issue --repo CAprogs/coding-dojo-ia-x-data --add-assignee @me
 ```
 
-## Etape 5 - Développement
+## Etape 5 - Créer la branche de travail
+
+Crée une branche nommée d'après l'issue depuis `lille` à jour :
+
+```bash
+git checkout -b issue-$issue lille
+```
+
+## Etape 6 - Développement
 
 Informe le contributeur qu'il peut maintenant travailler sur sa branche. Rappelle-lui de :
 - Faire des commits atomiques et clairs
 - Référencer l'issue dans les messages de commit (ex: `refs #$issue`)
 
-## Etape 6 - Pousser et créer la PR
+## Etape 7 - Pousser et créer la PR
 
 Une fois le travail terminé, pousse la branche sur le fork et crée une PR vers upstream :
 
@@ -80,7 +88,7 @@ Puis crée la PR avec `gh` :
 ```bash
 gh pr create --repo CAprogs/coding-dojo-ia-x-data \
   --head <user>:issue-$issue \
-  --base main \
+  --base lille \
   --title "<titre descriptif>" \
   --body "Closes CAprogs/coding-dojo-ia-x-data#$issue
 
@@ -93,7 +101,7 @@ gh pr create --repo CAprogs/coding-dojo-ia-x-data \
 
 Demande confirmation au contributeur avant de créer la PR.
 
-## Etape 7 - Suivi
+## Etape 8 - Suivi
 
 Informe le contributeur que :
 - La PR est en attente de review par les mainteneurs
