@@ -103,6 +103,13 @@ duckdb-ui: dbt-run
     @echo "\nStarting DuckDB UI .."
     @duckdb -ui {{DATABASE_PATH}}
 
+# Open an interactive DuckDB shell on the warehouse (no dbt run required)
+[group("dbt")]
+explore:
+    @echo "\nOpening DuckDB shell on {{DATABASE_PATH}} .."
+    @echo "Tip: run 'SHOW TABLES;' to list available tables\n"
+    @duckdb {{DATABASE_PATH}}
+
 
 # Final Workflow
 
