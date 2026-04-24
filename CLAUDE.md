@@ -118,3 +118,78 @@ src/exposition/         → Streamlit web app
 ## CI/CD
 
 `.github/workflows/lille.yml` runs pre-commit hooks via `prek` on pull requests to the `lille` branch.
+
+## Data Exploration Workflow
+
+A reproducible workflow to inspect the warehouse and answer business questions with Claude Code — no plugin required.
+
+### Prerequisites
+
+```bash
+uv sync --frozen --all-groups   # Install dependencies
+uv run just comp-start          # Start MinIO (Docker)
+uv run just ingest              # Fetch today's events from Paris Open Data
+uv run just dbt-run             # Build bronze/silver/gold tables in DuckDB
+```
+
+### Entry points
+
+| Goal | Command |
+|------|---------|
+| Interactive SQL queries | `uv run just duckdb-ui` — opens the DuckDB UI on `warehouse/prod.duckdb` |
+| Browse the model DAG + column docs | `uv run just dbt-catalog` — serves dbt docs on port 3000 |
+| Explore via the app | `uv run just expose` — Streamlit UI with tag/price/accessibility filters |
+| Quick CLI query | `duckdb warehouse/prod.duckdb "SELECT ..."` |
+
+### Key tables
+
+Start from the gold layer; go deeper into silver only if you need raw fields.
+
+| Table | Schema | What it contains |
+|-------|--------|-----------------|
+| `today_events` | gold | Events with at least one occurrence today |
+| `nb_events_by_tags` | gold | Tag frequency — good entry point for category analysis |
+| `handicap_friendly_events` | gold | Events accessible to people with disabilities |
+| `up_to_date_events` | silver | All non-outdated events, fully enriched (coordinates, accessibility struct, parsed schedule) |
+| `agenda` | silver | Parsed occurrence slots — use when querying schedules |
+| `filtered_rows` | silver | Cleaned raw columns (spatial extraction, HTML stripping) |
+| `raw_events` | bronze | All 75 raw columns straight from the parquet file |
+
+### Useful starter queries
+
+```sql
+-- How many events are available today?
+SELECT count(*) FROM gold.today_events;
+
+-- Top 10 tags by event count
+SELECT qfap_tags_distinct, nb_events
+FROM gold.nb_events_by_tags
+LIMIT 10;
+
+-- Free events happening today with an address
+SELECT title, full_address, prochains_creneaux
+FROM gold.today_events
+WHERE price_type = 'Gratuit'
+  AND full_address IS NOT NULL
+ORDER BY rank DESC
+LIMIT 20;
+
+-- Accessible events with coordinates (for a map)
+SELECT title, latitude, longitude, handicap_friendly_details
+FROM gold.handicap_friendly_events
+WHERE latitude IS NOT NULL
+LIMIT 50;
+
+-- Schema introspection: list all columns of a table
+DESCRIBE silver.up_to_date_events;
+```
+
+### Asking Claude Code to explore the data
+
+With the warehouse populated, you can delegate exploration directly to Claude Code:
+
+- *"Combien d'événements gratuits ont lieu cette semaine dans le 11e ?"*
+- *"Quels sont les tags les plus fréquents pour les événements pour enfants ?"*
+- *"Montre-moi les 5 événements les mieux classés avec une adresse complète."*
+
+Claude will run `duckdb warehouse/prod.duckdb "..."` queries against the local file — no external connection needed.
