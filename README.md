@@ -142,17 +142,15 @@ uv pip install -e .
 > [!IMPORTANT]
 > Avant de lancer le projet, assurez-vous que :
 > - Le `docker daemon` est en cours d'exécution (Docker Desktop doit être lancé)
-> - Vous avez configuré les variables d'environnement nécessaires dans le fichier `.env` à la racine du projet comme suit :
+> - Vous avez configuré les variables d'environnement en copiant le template :
 >   ```bash
->   DBT_ENV_SECRET_MINIO_ACCESS_KEY="<YOUR_ACCESS_KEY>"
->   DBT_ENV_SECRET_MINIO_SECRET_KEY="<YOUR_SECRET_KEY>"
->   DBT_PROFILES_DIR="./src/transformation/dbt_paris_event_analyzer/profiles/"
->   DBT_PROJECT_DIR="./src/transformation/dbt_paris_event_analyzer/"
+>   cp .env.example .env
 >   ```
->   Les identifiants sont à choisir librement avec les règles suivantes :
+>   Les identifiants MinIO sont à choisir librement avec les règles suivantes :
 >  - `DBT_ENV_SECRET_MINIO_ACCESS_KEY` : au moins 3 caractères, correspond à votre nom d'utilisateur
 >  - `DBT_ENV_SECRET_MINIO_SECRET_KEY` : au moins 8 caractères, correspond à votre mot de passe
 >
+>   Voir `.env.example` pour le détail de toutes les variables et leurs valeurs par défaut.
 
 3. Déployer les services nécessaires
 ```bash

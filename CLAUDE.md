@@ -65,14 +65,20 @@ uv run just duckdb-ui         # Run dbt models and start DuckDB UI
 
 ### Environment Variables
 
-Create a `.env` file at the project root:
+Copy the template and adjust values if needed:
 
 ```bash
-DBT_ENV_SECRET_MINIO_ACCESS_KEY="<username, 3+ chars>"
-DBT_ENV_SECRET_MINIO_SECRET_KEY="<password, 8+ chars>"
-DBT_PROFILES_DIR="./src/transformation/dbt_paris_event_analyzer/profiles/"
-DBT_PROJECT_DIR="./src/transformation/dbt_paris_event_analyzer/"
+cp .env.example .env
 ```
+
+| Variable | Required | Constraint | Used by |
+|----------|----------|------------|---------|
+| `DBT_ENV_SECRET_MINIO_ACCESS_KEY` | Yes | min 3 chars | docker-compose, ingestion, dbt profiles |
+| `DBT_ENV_SECRET_MINIO_SECRET_KEY` | Yes | min 8 chars | docker-compose, ingestion, dbt profiles |
+| `DBT_PROFILES_DIR` | Yes | path | dbt-core (non-default location) |
+| `DBT_PROJECT_DIR` | Yes | path | dbt-core (non-default location) |
+
+See `.env.example` for safe default values.
 
 ## Architecture
 
